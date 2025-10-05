@@ -27,14 +27,14 @@ let package = Package(
       name: "TokamakStaticHTMLDemo",
       targets: ["TokamakStaticHTMLDemo"]
     ),
-    // .library(
-    //   name: "TokamakGTK",
-    //   targets: ["TokamakGTK"]
-    // ),
-    // .executable(
-    //   name: "TokamakGTKDemo",
-    //   targets: ["TokamakGTKDemo"]
-    // ),
+    .library(
+      name: "TokamakGTK3",
+      targets: ["TokamakGTK3"]
+    ),
+    .executable(
+      name: "TokamakGTKDemo",
+      targets: ["TokamakGTKDemo"]
+    ),
     .library(
       name: "TokamakShim",
       targets: ["TokamakShim"]
@@ -84,47 +84,62 @@ let package = Package(
       name: "TokamakShim",
       dependencies: [
         .target(name: "TokamakDOM", condition: .when(platforms: [.wasi])),
-        // .target(name: "TokamakGTK", condition: .when(platforms: [.linux])),
+        .target(name: "TokamakGTK3", condition: .when(platforms: [.linux])),
+        .target(name: "TokamakGTK4", condition: .when(platforms: [.linux])),
         .target(name: "TokamakCore", condition: .when(platforms: [.linux])),
       ]
     ),
-    // .systemLibrary(
-    //   name: "CGTK",
-    //   pkgConfig: "gtk+-3.0",
-    //   providers: [
-    //     .apt(["libgtk+-3.0", "gtk+-3.0"]),
-    //     // .yum(["gtk3-devel"]),
-    //     .brew(["gtk+3"]),
-    //   ]
-    // ),
-    // .systemLibrary(
-    //   name: "CGDK",
-    //   pkgConfig: "gdk-3.0",
-    //   providers: [
-    //     .apt(["libgtk+-3.0", "gtk+-3.0"]),
-    //     // .yum(["gtk3-devel"]),
-    //     .brew(["gtk+3"]),
-    //   ]
-    // ),
-    // .target(
-    //   name: "TokamakGTKCHelpers",
-    //   dependencies: ["CGTK"]
-    // ),
-    // .target(
-    //   name: "TokamakGTK",
-    //   dependencies: [
-    //     "TokamakCore", "CGTK", "CGDK", "TokamakGTKCHelpers",
-    //     .product(
-    //       name: "OpenCombineShim",
-    //       package: "OpenCombine"
-    //     ),
-    //   ]
-    // ),
-    // .executableTarget(
-    //   name: "TokamakGTKDemo",
-    //   dependencies: ["TokamakGTK"],
-    //   resources: [.copy("logo-header.png")]
-    // ),
+    .systemLibrary(
+      name: "CGTK4",
+      pkgConfig: "gtk4",
+      providers: [
+        .apt(["libgtk-4-dev", "gtk4"]),
+        .yum(["gtk4-devel"]),
+        .brew(["gtk4"]),
+      ]
+    ),
+    .systemLibrary(
+      name: "CGTK3",
+      pkgConfig: "gtk+-3.0",
+      providers: [
+        .apt(["libgtk+-3.0", "gtk+-3.0"]),
+        .yum(["gtk3-devel"]),
+        .brew(["gtk+3"]),
+      ]
+    ),
+    .target(
+      name: "TokamakGTK3CHelpers",
+      dependencies: ["CGTK3"]
+    ),
+    .target(
+      name: "TokamakGTK4CHelpers",
+      dependencies: ["CGTK4"]
+    ),
+    .target(
+      name: "TokamakGTK3",
+      dependencies: [
+        "TokamakCore", "CGTK3", "TokamakGTK3CHelpers",
+        .product(
+          name: "OpenCombineShim",
+          package: "OpenCombine"
+        ),
+      ]
+    ),
+    .target(
+      name: "TokamakGTK4",
+      dependencies: [
+        "TokamakCore", "CGTK4", "TokamakGTK4CHelpers",
+        .product(
+          name: "OpenCombineShim",
+          package: "OpenCombine"
+        ),
+      ]
+    ),
+    .executableTarget(
+      name: "TokamakGTKDemo",
+      dependencies: ["TokamakGTK4"],
+      resources: [.copy("logo-header.png")]
+    ),
     .target(
       name: "TokamakStaticHTML",
       dependencies: [

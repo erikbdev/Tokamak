@@ -1,0 +1,8 @@
+module CGTK4 {
+    header "./termios-Header.h"
+    header "./CGTK-Bridging-Header.h"
+    
+    link "gtk-4"
+
+    export *
+}

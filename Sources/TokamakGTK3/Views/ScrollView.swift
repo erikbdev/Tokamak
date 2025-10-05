@@ -11,13 +11,32 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+//
+//  Created by Carson Katri on 10/13/20.
+//
 
-#if canImport(SwiftUI)
-  @_exported import SwiftUI
-#elseif os(WASI)
-  @_exported import TokamakDOM
-#elseif os(Linux) && canImport(CGTK4)
-  @_exported import TokamakGTK4
-#elseif os(Linux)
-  @_exported import TokamakGTK3
-#endif
+import CGTK3
+import TokamakCore
+
+extension ScrollView: GTKPrimitive {
+  @_spi(TokamakCore)
+  public var renderedBody: AnyView {
+    AnyView(
+      WidgetView(build: { _ in
+        gtk_scrolled_window_new(nil, nil)
+      }) {
+        if children.count > 1 {
+          VStack {
+            ForEach(Array(children.enumerated()), id: \.offset) { _, view in
+              view
+            }
+          }
+        } else {
+          ForEach(Array(children.enumerated()), id: \.offset) { _, view in
+            view
+          }
+        }
+      }
+    )
+  }
+}
