@@ -13,9 +13,10 @@
 // limitations under the License.
 
 #if canImport(SwiftUI)
-@_exported import SwiftUI
+  @_exported import SwiftUI
 #elseif os(WASI)
-@_exported import TokamakDOM
+  @_exported import TokamakDOM
 #elseif os(Linux)
-@_exported import TokamakGTK
+  // @_exported import TokamakGTK
+  @_exported import TokamakCore
 #endif

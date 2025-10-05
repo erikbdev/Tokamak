@@ -27,14 +27,14 @@ let package = Package(
       name: "TokamakStaticHTMLDemo",
       targets: ["TokamakStaticHTMLDemo"]
     ),
-    .library(
-      name: "TokamakGTK",
-      targets: ["TokamakGTK"]
-    ),
-    .executable(
-      name: "TokamakGTKDemo",
-      targets: ["TokamakGTKDemo"]
-    ),
+    // .library(
+    //   name: "TokamakGTK",
+    //   targets: ["TokamakGTK"]
+    // ),
+    // .executable(
+    //   name: "TokamakGTKDemo",
+    //   targets: ["TokamakGTKDemo"]
+    // ),
     .library(
       name: "TokamakShim",
       targets: ["TokamakShim"]
@@ -51,7 +51,7 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/OpenCombine/OpenCombine.git",
-      from: "0.12.0"
+      from: "0.14.0"
     ),
     .package(
       url: "https://github.com/swiftwasm/OpenCombineJS.git",
@@ -77,57 +77,58 @@ let package = Package(
         .product(
           name: "OpenCombineShim",
           package: "OpenCombine"
-        ),
+        )
       ]
     ),
     .target(
       name: "TokamakShim",
       dependencies: [
         .target(name: "TokamakDOM", condition: .when(platforms: [.wasi])),
-        .target(name: "TokamakGTK", condition: .when(platforms: [.linux])),
+        // .target(name: "TokamakGTK", condition: .when(platforms: [.linux])),
+        .target(name: "TokamakCore", condition: .when(platforms: [.linux])),
       ]
     ),
-    .systemLibrary(
-      name: "CGTK",
-      pkgConfig: "gtk+-3.0",
-      providers: [
-        .apt(["libgtk+-3.0", "gtk+-3.0"]),
-        // .yum(["gtk3-devel"]),
-        .brew(["gtk+3"]),
-      ]
-    ),
-    .systemLibrary(
-      name: "CGDK",
-      pkgConfig: "gdk-3.0",
-      providers: [
-        .apt(["libgtk+-3.0", "gtk+-3.0"]),
-        // .yum(["gtk3-devel"]),
-        .brew(["gtk+3"]),
-      ]
-    ),
-    .target(
-      name: "TokamakGTKCHelpers",
-      dependencies: ["CGTK"]
-    ),
-    .target(
-      name: "TokamakGTK",
-      dependencies: [
-        "TokamakCore", "CGTK", "CGDK", "TokamakGTKCHelpers",
-        .product(
-          name: "OpenCombineShim",
-          package: "OpenCombine"
-        ),
-      ]
-    ),
-    .executableTarget(
-      name: "TokamakGTKDemo",
-      dependencies: ["TokamakGTK"],
-      resources: [.copy("logo-header.png")]
-    ),
+    // .systemLibrary(
+    //   name: "CGTK",
+    //   pkgConfig: "gtk+-3.0",
+    //   providers: [
+    //     .apt(["libgtk+-3.0", "gtk+-3.0"]),
+    //     // .yum(["gtk3-devel"]),
+    //     .brew(["gtk+3"]),
+    //   ]
+    // ),
+    // .systemLibrary(
+    //   name: "CGDK",
+    //   pkgConfig: "gdk-3.0",
+    //   providers: [
+    //     .apt(["libgtk+-3.0", "gtk+-3.0"]),
+    //     // .yum(["gtk3-devel"]),
+    //     .brew(["gtk+3"]),
+    //   ]
+    // ),
+    // .target(
+    //   name: "TokamakGTKCHelpers",
+    //   dependencies: ["CGTK"]
+    // ),
+    // .target(
+    //   name: "TokamakGTK",
+    //   dependencies: [
+    //     "TokamakCore", "CGTK", "CGDK", "TokamakGTKCHelpers",
+    //     .product(
+    //       name: "OpenCombineShim",
+    //       package: "OpenCombine"
+    //     ),
+    //   ]
+    // ),
+    // .executableTarget(
+    //   name: "TokamakGTKDemo",
+    //   dependencies: ["TokamakGTK"],
+    //   resources: [.copy("logo-header.png")]
+    // ),
     .target(
       name: "TokamakStaticHTML",
       dependencies: [
-        "TokamakCore",
+        "TokamakCore"
       ]
     ),
     .executableTarget(
@@ -182,13 +183,13 @@ let package = Package(
         .unsafeFlags(
           ["-Xlinker", "--stack-first", "-Xlinker", "-z", "-Xlinker", "stack-size=16777216"],
           .when(platforms: [.wasi])
-        ),
+        )
       ]
     ),
     .executableTarget(
       name: "TokamakStaticHTMLDemo",
       dependencies: [
-        "TokamakStaticHTML",
+        "TokamakStaticHTML"
       ]
     ),
     .target(
