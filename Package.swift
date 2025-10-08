@@ -28,8 +28,8 @@ let package = Package(
       targets: ["TokamakStaticHTMLDemo"]
     ),
     .library(
-      name: "TokamakGTK3",
-      targets: ["TokamakGTK3"]
+      name: "TokamakGTK4",
+      targets: ["TokamakGTK4"]
     ),
     .executable(
       name: "TokamakGTKDemo",
@@ -84,9 +84,8 @@ let package = Package(
       name: "TokamakShim",
       dependencies: [
         .target(name: "TokamakDOM", condition: .when(platforms: [.wasi])),
-        .target(name: "TokamakGTK3", condition: .when(platforms: [.linux])),
         .target(name: "TokamakGTK4", condition: .when(platforms: [.linux])),
-        .target(name: "TokamakCore", condition: .when(platforms: [.linux])),
+        .target(name: "TokamakCore", condition: .when(platforms: [.android, .linux, .wasi, .windows])),
       ]
     ),
     .systemLibrary(
@@ -98,32 +97,9 @@ let package = Package(
         .brew(["gtk4"]),
       ]
     ),
-    .systemLibrary(
-      name: "CGTK3",
-      pkgConfig: "gtk+-3.0",
-      providers: [
-        .apt(["libgtk+-3.0", "gtk+-3.0"]),
-        .yum(["gtk3-devel"]),
-        .brew(["gtk+3"]),
-      ]
-    ),
-    .target(
-      name: "TokamakGTK3CHelpers",
-      dependencies: ["CGTK3"]
-    ),
     .target(
       name: "TokamakGTK4CHelpers",
       dependencies: ["CGTK4"]
-    ),
-    .target(
-      name: "TokamakGTK3",
-      dependencies: [
-        "TokamakCore", "CGTK3", "TokamakGTK3CHelpers",
-        .product(
-          name: "OpenCombineShim",
-          package: "OpenCombine"
-        ),
-      ]
     ),
     .target(
       name: "TokamakGTK4",

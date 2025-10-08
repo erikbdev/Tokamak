@@ -16,8 +16,6 @@
   @_exported import SwiftUI
 #elseif os(WASI)
   @_exported import TokamakDOM
-#elseif os(Linux) && canImport(CGTK4)
+#else
   @_exported import TokamakGTK4
-#elseif os(Linux)
-  @_exported import TokamakGTK3
 #endif
