@@ -40,10 +40,12 @@ struct PathDemo: View {
       }
       Path { path in
         path.addRect(.init(origin: .zero, size: .init(width: 20, height: 20)))
-        path.addEllipse(in: .init(
-          origin: .init(x: 25, y: 0),
-          size: .init(width: 20, height: 20)
-        ))
+        path.addEllipse(
+          in: .init(
+            origin: .init(x: 25, y: 0),
+            size: .init(width: 20, height: 20)
+          )
+        )
         path.addRoundedRect(
           in: .init(origin: .init(x: 50, y: 0), size: .init(width: 20, height: 20)),
           cornerSize: .init(width: 4, height: 4)
@@ -68,7 +70,6 @@ struct PathDemo: View {
       }
       .foregroundColor(Color.blue)
       if #available(macOS 12.0, iOS 15, *) {
-        #if compiler(>=5.5) || os(WASI) // Xcode 13 required for `containerShape`.
         ZStack {
           ContainerRelativeShape()
             .fill(Color.blue)
@@ -78,7 +79,6 @@ struct PathDemo: View {
             .frame(width: 50, height: 50)
         }
         .containerShape(Circle())
-        #endif
       }
     }
   }

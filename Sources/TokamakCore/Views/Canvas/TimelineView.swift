@@ -32,6 +32,8 @@ public struct TimelineView<Schedule, Content> where Schedule: TimelineSchedule {
     public var date: Date { dateProvider() }
     public let cadence: Cadence
   }
+
+  public typealias TimelineViewDefaultContext = TimelineView<EveryMinuteTimelineSchedule, Never>.Context
 }
 
 extension TimelineView: View, _PrimitiveView where Content: View {
@@ -70,9 +72,9 @@ public enum TimelineScheduleMode: Hashable {
   case lowFrequency
 }
 
-public extension TimelineSchedule where Self == PeriodicTimelineSchedule {
+extension TimelineSchedule where Self == PeriodicTimelineSchedule {
   @inlinable
-  static func periodic(
+  public static func periodic(
     from startDate: Date,
     by interval: TimeInterval
   ) -> PeriodicTimelineSchedule {
@@ -80,15 +82,14 @@ public extension TimelineSchedule where Self == PeriodicTimelineSchedule {
   }
 }
 
-public extension TimelineSchedule where Self == EveryMinuteTimelineSchedule {
+extension TimelineSchedule where Self == EveryMinuteTimelineSchedule {
   @inlinable
-  static var everyMinute: EveryMinuteTimelineSchedule { .init() }
+  public static var everyMinute: EveryMinuteTimelineSchedule { .init() }
 }
 
-public extension TimelineSchedule {
-  static func explicit<S>(_ dates: S) -> ExplicitTimelineSchedule<S>
-    where Self == ExplicitTimelineSchedule<S>, S.Element == Date
-  {
+extension TimelineSchedule {
+  public static func explicit<S>(_ dates: S) -> ExplicitTimelineSchedule<S>
+  where Self == ExplicitTimelineSchedule<S>, S.Element == Date {
     .init(dates)
   }
 }
@@ -141,7 +142,9 @@ public struct EveryMinuteTimelineSchedule: TimelineSchedule {
   }
 }
 
-public struct ExplicitTimelineSchedule<Entries>: TimelineSchedule where Entries: Sequence,
+public struct ExplicitTimelineSchedule<Entries>: TimelineSchedule
+where
+  Entries: Sequence,
   Entries.Element == Date
 {
   private let dates: Entries
@@ -155,11 +158,11 @@ public struct ExplicitTimelineSchedule<Entries>: TimelineSchedule where Entries:
   }
 }
 
-public extension TimelineSchedule where Self == AnimationTimelineSchedule {
+extension TimelineSchedule where Self == AnimationTimelineSchedule {
   @inlinable
-  static var animation: AnimationTimelineSchedule { .init() }
+  public static var animation: AnimationTimelineSchedule { .init() }
   @inlinable
-  static func animation(
+  public static func animation(
     minimumInterval: Double? = nil,
     paused: Bool = false
   ) -> AnimationTimelineSchedule {

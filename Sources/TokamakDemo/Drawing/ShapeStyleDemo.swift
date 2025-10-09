@@ -17,7 +17,6 @@ import TokamakShim
 @available(macOS 12.0, iOS 15.0, *)
 struct ShapeStyleDemo: View {
   var body: some View {
-    #if compiler(>=5.5) || os(WASI)
     VStack {
       HStack {
         VStack {
@@ -143,6 +142,5 @@ struct ShapeStyleDemo: View {
         )
         .frame(width: 300, height: 100)
     }
-    #endif
   }
 }

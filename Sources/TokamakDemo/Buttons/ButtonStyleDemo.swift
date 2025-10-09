@@ -25,17 +25,17 @@ struct PressedButtonStyle: ButtonStyle {
 }
 
 public struct ButtonStyleDemo: View {
-  #if compiler(>=5.5) || os(WASI) // Xcode 13 required for `controlSize` & `ButtonRole`.
-  var allSizes: some View {
-    HStack {
-      if #available(iOS 15.0, macOS 12.0, *) {
-        ForEach(Array(ControlSize.allCases.enumerated()), id: \.offset) { controlSize in
-          Button("Button", role: .cancel) {}
-            .controlSize(controlSize.element)
+  #if compiler(>=5.5) || os(WASI)  // Xcode 13 required for `controlSize` & `ButtonRole`.
+    var allSizes: some View {
+      HStack {
+        if #available(iOS 15.0, macOS 12.0, *) {
+          ForEach(Array(ControlSize.allCases.enumerated()), id: \.offset) { controlSize in
+            Button("Button", role: .cancel) {}
+              .controlSize(controlSize.element)
+          }
         }
       }
     }
-  }
   #endif
 
   public var body: some View {
@@ -43,38 +43,44 @@ public struct ButtonStyleDemo: View {
       Button("Default Style") {
         print("tapped")
       }
-      Button(action: { print("tapped") }, label: {
-        HStack {
-          Text("Default").padding(.trailing, 5)
-          Circle().frame(width: 10, height: 10, alignment: .center)
-          Text("Style").padding(.horizontal, 5)
-          Ellipse().fill(Color.red).frame(width: 20, height: 10, alignment: .center)
-          Text("With").padding(.horizontal, 5)
-          Capsule().fill(Color.green).frame(width: 20, height: 10, alignment: .center)
-          Text("Complex").padding(.horizontal, 5)
-          Rectangle().fill(Color.blue).frame(width: 10, height: 10, alignment: .center)
-          Text("Label").padding(.leading, 5)
+      Button(
+        action: { print("tapped") },
+        label: {
+          HStack {
+            Text("Default").padding(.trailing, 5)
+            Circle().frame(width: 10, height: 10, alignment: .center)
+            Text("Style").padding(.horizontal, 5)
+            Ellipse().fill(Color.red).frame(width: 20, height: 10, alignment: .center)
+            Text("With").padding(.horizontal, 5)
+            Capsule().fill(Color.green).frame(width: 20, height: 10, alignment: .center)
+            Text("Complex").padding(.horizontal, 5)
+            Rectangle().fill(Color.blue).frame(width: 10, height: 10, alignment: .center)
+            Text("Label").padding(.leading, 5)
+          }
         }
-      })
+      )
       Button("Pressed Button Style") {
         print("tapped")
       }
       .buttonStyle(
         PressedButtonStyle(pressedColor: Color.red)
       )
-      Button(action: { print("tapped") }, label: {
-        HStack {
-          Text("Pressed").padding(.trailing, 5)
-          Circle().frame(width: 10, height: 10, alignment: .center)
-          Text("Style").padding(.horizontal, 5)
-          Ellipse().fill(Color.red).frame(width: 20, height: 10, alignment: .center)
-          Text("With").padding(.horizontal, 5)
-          Capsule().fill(Color.green).frame(width: 20, height: 10, alignment: .center)
-          Text("Complex").padding(.horizontal, 5)
-          Rectangle().fill(Color.blue).frame(width: 10, height: 10, alignment: .center)
-          Text("Label").padding(.leading, 5)
+      Button(
+        action: { print("tapped") },
+        label: {
+          HStack {
+            Text("Pressed").padding(.trailing, 5)
+            Circle().frame(width: 10, height: 10, alignment: .center)
+            Text("Style").padding(.horizontal, 5)
+            Ellipse().fill(Color.red).frame(width: 20, height: 10, alignment: .center)
+            Text("With").padding(.horizontal, 5)
+            Capsule().fill(Color.green).frame(width: 20, height: 10, alignment: .center)
+            Text("Complex").padding(.horizontal, 5)
+            Rectangle().fill(Color.blue).frame(width: 10, height: 10, alignment: .center)
+            Text("Label").padding(.leading, 5)
+          }
         }
-      })
+      )
       .buttonStyle(
         PressedButtonStyle(pressedColor: Color.red)
       )
@@ -90,10 +96,10 @@ public struct ButtonStyleDemo: View {
         allSizes
           .buttonStyle(BorderedButtonStyle())
         #if !os(iOS)
-        Text("link")
-          .font(.headline)
-        allSizes
-          .buttonStyle(LinkButtonStyle())
+          Text("link")
+            .font(.headline)
+          allSizes
+            .buttonStyle(LinkButtonStyle())
         #endif
         Text("plain")
           .font(.headline)
